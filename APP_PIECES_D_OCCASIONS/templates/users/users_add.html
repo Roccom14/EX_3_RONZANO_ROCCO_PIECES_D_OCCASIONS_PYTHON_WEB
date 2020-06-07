@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %} Ajouter un USER{% endblock %}
+{% block body %}
+    <div class="home">
+        <BODY bgcolor="white">
+        <form method="POST" action="">
+            <div>
+                {% if error %}
+                    <p class=error><strong>Error:</strong> {{ error }}
+                {% endif %}
+            </div>
+            <center>
+                <div><H1>Clavioter un nouveau USER</H1></div>
+                <div>Prénom <input type = "text" name= "firstname_user_html" /></div>
+                <div>Nom <input type = "text" name= "lastname_user_html" /></div>
+                <div>Mail <input type = "text" name= "mail_html" /></div>
+                <div>Téléphone <input type = "text" name= "phone_html" /></div>
+                <div>Adresse <input type = "text" name= "address_html" /></div>
+                <div>Ville <input type = "text" name= "city_html" /></div>
+                <div>NPA <input type = "text" name= "npa_html" /></div>
+                <div>
+                    <select name="gender_select">
+                    {% for row in data_genders %}
+                        <option value="{{ row.id_gender }}">{{ row.gender }}</option>
+                    {% endfor %}
+                    </select>
+                </div>
+                <div>Date <input type = "date" name= "date_user_html" /> <br>
+                <input type = "submit" value="Enregistrer le user">
+            </center>
+        </form>
+        </BODY>
+    </div>
+{% endblock %}
