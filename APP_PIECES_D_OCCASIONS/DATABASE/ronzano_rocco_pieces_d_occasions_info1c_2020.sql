@@ -1,3 +1,8 @@
+-- RR 2020.02.12
+-- FICHIER MYSQL POUR FAIRE FONCTIONNER LES EXEMPLES
+-- DE REQUETES MYSQL
+-- Database:
+
 -- phpMyAdmin SQL Dump
 -- version 4.5.4.1
 -- http://www.phpmyadmin.net
@@ -6,6 +11,19 @@
 -- Généré le :  Sam 06 Juin 2020 à 17:58
 -- Version du serveur :  5.7.11
 -- Version de PHP :  5.6.18
+
+-- Détection si une autre base de donnée du même nom existe
+
+DROP DATABASE IF EXISTS ronzano_rocco_pieces_d_occasions_info1c_2020;
+
+-- Création d'un nouvelle base de donnée
+
+CREATE DATABASE IF NOT EXISTS ronzano_rocco_pieces_d_occasions_info1c_2020;
+
+-- Utilisation de cette base de donnée
+
+USE ronzano_rocco_pieces_d_occasions_info1c_2020;
+-- --------------------------------------------------------
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -28,7 +46,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `t_gender` (
   `id_gender` int(11) NOT NULL,
-  `gender` varchar(32) NOT NULL
+  `gender` text(32) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --

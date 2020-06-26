@@ -82,7 +82,7 @@ def genders_add():
                 print(f"Données insérées !!")
                 # On va interpréter la "route" 'genders_afficher', car l'utilisateur
                 # doit voir le nouveau gender qu'il vient d'insérer.
-                return redirect(url_for('genders_afficher'))
+                return redirect(url_for('genders_afficher', order_by='ASC', id_genders_sel=0))
 
         # OM 2020.04.16 ATTENTION à l'ordre des excepts très important de respecter l'ordre.
         except pymysql.err.IntegrityError as erreur:
@@ -154,7 +154,7 @@ def genders_edit():
             raise MaBdErreurConnexion(f"RGG Exception {msg_erreurs['ErreurConnexionBD']['message']}"
                                       f"et son status {msg_erreurs['ErreurConnexionBD']['status']}")
 
-    return render_template("genders/genders_edit.html", data=data_id_gender)
+    return render_template('genders/genders_edit.html', data=data_id_gender)
 
 
 # ---------------------------------------------------------------------------------------------------
@@ -219,7 +219,7 @@ def genders_update():
                 # Message ci-après permettent de donner un sentiment rassurant aux utilisateurs.
                 flash(f"Editer le gender d'un film !!!")
                 # On affiche les genders
-                return redirect(url_for('genders_afficher'))
+                return redirect(url_for('genders_afficher', order_by='ASC', id_genders_sel=0))
 
         except (Exception,
                 pymysql.err.OperationalError,
@@ -300,7 +300,7 @@ def genders_delete():
             # OM 2019.04.02 Envoie la page "HTML" au serveur. On passe un message d'information dans "message_html"
 
             # On affiche les genders
-            return redirect(url_for('genders_afficher'))
+            return redirect(url_for('genders_afficher', order_by='ASC', id_genders_sel=0))
 
 
 
@@ -314,7 +314,7 @@ def genders_delete():
                 # DEBUG bon marché : Pour afficher un message dans la console.
                 print(f"IMPOSSIBLE d'effacer !! Ce gender est associé à des users dans la t_genders_films !!! : {erreur}")
                 # Afficher la liste des genders des users
-                return redirect(url_for('genders_afficher'))
+                return redirect(url_for('genders_afficher', order_by='ASC', id_genders_sel=0))
             else:
                 # Communiquer qu'une autre erreur que la 1062 est survenue.
                 # DEBUG bon marché : Pour afficher un message dans la console.

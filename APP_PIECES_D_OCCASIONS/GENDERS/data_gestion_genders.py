@@ -72,7 +72,6 @@ class GestionGenders:
             with MaBaseDeDonnee() as mconn_bd:
                 mconn_bd.mabd_execute(strsql_insert_gender, valeurs_insertion_dictionnaire)
 
-
         except pymysql.err.IntegrityError as erreur:
             # OM 2020.04.09 On dérive "pymysql.err.IntegrityError" dans "MaBdErreurDoublon" fichier "erreurs.py"
             # Ainsi on peut avoir un message d'erreur personnalisé.
@@ -84,7 +83,7 @@ class GestionGenders:
             print(valeur_id_dictionnaire)
             # OM 2020.04.07 C'EST LA QUE VOUS ALLEZ DEVOIR PLACER VOTRE PROPRE LOGIQUE MySql
             # Commande MySql pour afficher le gender sélectionné dans le tableau dans le formulaire HTML
-            str_sql_id_gender = "SELECT id_gender, gender FROM t_gender WHERE id_gender = %(value_id_gender)s"
+            str_sql_id_gender = """SELECT id_gender, gender FROM t_gender WHERE id_gender = %(value_id_gender)s"""
 
             # Du fait de l'utilisation des "context managers" on accède au curseur grâce au "with".
             # la subtilité consiste à avoir une méthode "mabd_execute" dans la classe "MaBaseDeDonnee"
@@ -93,9 +92,9 @@ class GestionGenders:
             with MaBaseDeDonnee().connexion_bd as mconn_bd:
                 with mconn_bd as mc_cur:
                     mc_cur.execute(str_sql_id_gender, valeur_id_dictionnaire)
-                    data_one = mc_cur.fetchall()
-                    print("valeur_id_dictionnaire...", data_one)
-                    return data_one
+                    data_id_gender = mc_cur.fetchall()
+                    print("valeur_id_dictionnaire...", data_id_gender)
+                    return data_id_gender
 
         except Exception as erreur:
             # OM 2020.03.01 Message en cas d'échec du bon déroulement des commandes ci-dessus.
