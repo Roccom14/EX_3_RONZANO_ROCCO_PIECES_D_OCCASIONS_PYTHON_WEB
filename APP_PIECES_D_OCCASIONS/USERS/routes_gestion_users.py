@@ -58,8 +58,8 @@ def users_afficher():
 def users_add():
     # OM 2019.03.25 Pour savoir si les données d'un formulaire sont un affichage
     # ou un envoi de donnée par des champs utilisateurs.
-    obj_actions_genders = GestionGenders()
-    data_genders = obj_actions_genders.gender_afficher_data()
+    obj_actions_user = GestionUsers()
+    data_user = obj_actions_user.user_afficher_data()
     if request.method == "POST":
         try:
             # OM 2020.04.09 Objet contenant toutes les méthodes pour gérer (CRUD) les données.
@@ -129,7 +129,7 @@ def users_add():
             raise MaBdErreurConnexion(
                 f"RGG Exception {msg_erreurs['ErreurConnexionBD']['message']} et son status {msg_erreurs['ErreurConnexionBD']['status']}")
     # OM 2020.04.07 Envoie la page "HTML" au serveur.
-    return render_template("users/users_add.html", data_genders=data_genders)
+    return render_template("users/users_add.html", data_user=data_user)
 
 
 # ---------------------------------------------------------------------------------------------------
