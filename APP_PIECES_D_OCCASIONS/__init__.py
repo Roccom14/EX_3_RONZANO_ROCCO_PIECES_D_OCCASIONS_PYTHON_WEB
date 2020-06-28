@@ -15,6 +15,8 @@ obj_mon_application.secret_key = '_vogonAmiral_)?^'
 # Doit se trouver ici... soit après l'instanciation de la classe "Flask"
 # OM 2020.03.25 Tout commence ici par "indiquer" les routes de l'application.
 from APP_PIECES_D_OCCASIONS import routes
-from APP_PIECES_D_OCCASIONS.USERS import routes_gestion_users
+from APP_PIECES_D_OCCASIONS.USER import routes_gestion_user
 from APP_PIECES_D_OCCASIONS.GENDERS import routes_gestion_genders
-# from APP_PIECES_D_OCCASIONS.GENRES_FILMS import routes_gestion_genres_films
+from APP_PIECES_D_OCCASIONS.STUFF import routes_gestion_stuff
+from APP_PIECES_D_OCCASIONS.STATE_STUFF import routes_gestion_state_stuff
+from APP_PIECES_D_OCCASIONS.TYPE_PAYMENT import routes_gestion_type_payment

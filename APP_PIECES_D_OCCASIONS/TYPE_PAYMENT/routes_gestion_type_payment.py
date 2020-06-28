@@ -1,10 +1,10 @@
-# routes_gestion_genders.py
+# routes_gestion_type_payment.py
 # OM 2020.04.06 Gestions des "routes" FLASK pour les genders.
 
 from flask import render_template, flash, redirect, url_for, request
 from APP_PIECES_D_OCCASIONS import obj_mon_application
-from APP_PIECES_D_OCCASIONS.GENDERS.data_gestion_genders import GestionGenders
 from APP_PIECES_D_OCCASIONS.DATABASE.erreurs import *
+from APP_PIECES_D_OCCASIONS.TYPE_PAYMENT.data_gestion_type_payment import GestionTypePayment
 # OM 2020.04.10 Pour utiliser les expressions régulières REGEX
 import re
 
@@ -15,19 +15,22 @@ import re
 # avec le navigateur par la méthode "render_template"
 # Pour tester http://127.0.0.1:1234/genders_afficher
 # ---------------------------------------------------------------------------------------------------
-@obj_mon_application.route("/genders_afficher/<string:order_by>/<int:id_genders_sel>", methods=['GET', 'POST'])
-def genders_afficher(order_by,id_genders_sel):
+
+
+
+@obj_mon_application.route("/type_payment_afficher/<string:order_by>/<int:id_type_payment_sel>", methods=['GET', 'POST'])
+def type_payment_afficher(order_by,id_type_payment_sel):
     # OM 2020.04.09 Pour savoir si les données d'un formulaire sont un affichage
     # ou un envoi de donnée par des champs du formulaire HTML.
     if request.method == "GET":
         try:
             # OM 2020.04.09 Objet contenant toutes les méthodes pour gérer (CRUD) les données.
-            obj_actions_genders = GestionGenders()
-            # Récupére les données grâce à une requête MySql définie dans la classe GestionGenders()
+            obj_actions_type_payment = GestionTypePayment()
+            # Récupére les données grâce à une requête MySql définie dans la classe GestionTypePayment()
             # Fichier data_gestion_genders.py
-            data_genders = obj_actions_genders.gender_afficher_data(order_by,id_genders_sel)
+            data_type_payment = obj_actions_type_payment.type_payment_afficher_data(order_by,id_type_payment_sel)
             # DEBUG bon marché : Pour afficher un message dans la console.
-            print(" data genders", data_genders, "type ", type(data_genders))
+            print(" data genders", data_type_payment, "type ", type(data_type_payment))
 
             # OM 2020.04.09 La ligns ci-après permet de donner un sentiment rassurant aux utilisateurs.
             flash("Données genders affichées !!", "Success")
@@ -40,7 +43,7 @@ def genders_afficher(order_by,id_genders_sel):
             # raise MaBdErreurOperation(f"RGG Exception {msg_erreurs['ErreurNomBD']['message']} {erreur}")
 
     # OM 2020.04.07 Envoie la page "HTML" au serveur.
-    return render_template("genders/genders_afficher.html", data=data_genders)
+    return render_template("type_payment/type_payment_afficher.html", data=data_type_payment)
 
 
 # ---------------------------------------------------------------------------------------------------
@@ -50,39 +53,39 @@ def genders_afficher(order_by,id_genders_sel):
 # En cas d'erreur on affiche à nouveau la page "genders_add.html"
 # Pour la tester http://127.0.0.1:1234/genders_add
 # ---------------------------------------------------------------------------------------------------
-@obj_mon_application.route("/genders_add", methods=['GET', 'POST'])
-def genders_add():
+@obj_mon_application.route("/type_payment_add", methods=['GET', 'POST'])
+def type_payment_add():
     # OM 2019.03.25 Pour savoir si les données d'un formulaire sont un affichage
     # ou un envoi de donnée par des champs utilisateurs.
     if request.method == "POST":
         try:
             # OM 2020.04.09 Objet contenant toutes les méthodes pour gérer (CRUD) les données.
-            obj_actions_genders = GestionGenders()
+            obj_actions_type_payment = GestionTypePayment()
             # OM 2020.04.09 Récupère le contenu du champ dans le formulaire HTML "genders_add.html"
-            gender = request.form['gender_html']
+            type_payment = request.form['type_payment_html']
 
             # OM 2019.04.04 On ne doit pas accepter des valeurs vides, des valeurs avec des chiffres,
             # des valeurs avec des caractères qui ne sont pas des lettres.
             # Accepte le trait d'union ou l'apostrophe, et l'espace entre deux mots, mais pas plus d'une occurence.
             if not re.match("^([A-Z]|[a-z\u00C0-\u00FF])[A-Za-z\u00C0-\u00FF]*['\\- ]?[A-Za-z\u00C0-\u00FF]+$",
-                                gender):
+                                type_payment):
                 # OM 2019.03.28 Message humiliant à l'attention de l'utilisateur.
                 flash(f"Une entrée...incorrecte !! Pas de chiffres, de caractères spéciaux, d'espace à double, "
                       f"de double apostrophe, de double trait union et ne doit pas être vide.", "Danger")
                 # On doit afficher à nouveau le formulaire "genders_add.html" à cause des erreurs de "claviotage"
-                return render_template("genders/genders_add.html")
+                return render_template("type_payment/type_payment_add.html")
             else:
 
                 # Constitution d'un dictionnaire et insertion dans la BD
-                valeurs_insertion_dictionnaire = {"value_gender": gender}
-                obj_actions_genders.add_gender_data(valeurs_insertion_dictionnaire)
+                valeurs_insertion_dictionnaire = {"value_type_payment": type_payment}
+                obj_actions_type_payment.add_type_payment_data(valeurs_insertion_dictionnaire)
 
                 # OM 2019.03.25 Les 2 lignes ci-après permettent de donner un sentiment rassurant aux utilisateurs.
                 flash(f"Données insérées !!", "Sucess")
                 print(f"Données insérées !!")
                 # On va interpréter la "route" 'genders_afficher', car l'utilisateur
                 # doit voir le nouveau gender qu'il vient d'insérer.
-                return redirect(url_for('genders_afficher', order_by='ASC', id_genders_sel=0))
+                return redirect(url_for('type_payment_afficher', order_by='ASC', id_type_payment_sel=0))
 
         # OM 2020.04.16 ATTENTION à l'ordre des excepts très important de respecter l'ordre.
         except pymysql.err.IntegrityError as erreur:
@@ -104,7 +107,7 @@ def genders_add():
             # Ainsi on peut avoir un message d'erreur personnalisé.
             raise MaBdErreurConnexion(f"RGG Exception {msg_erreurs['ErreurConnexionBD']['message']} et son status {msg_erreurs['ErreurConnexionBD']['status']}")
     # OM 2020.04.07 Envoie la page "HTML" au serveur.
-    return render_template("genders/genders_add.html")
+    return render_template("type_payment/type_payment_add.html")
 
 
 # ---------------------------------------------------------------------------------------------------
@@ -112,8 +115,8 @@ def genders_add():
 # au navigateur par la méthode "render_template".
 # On change la valeur d'un gender de user par la commande MySql "UPDATE"
 # ---------------------------------------------------------------------------------------------------
-@obj_mon_application.route('/genders_edit', methods=['POST', 'GET'])
-def genders_edit():
+@obj_mon_application.route('/type_payment_edit', methods=['POST', 'GET'])
+def type_payment_edit():
     # OM 2020.04.07 Les données sont affichées dans un formulaire, l'affichage de la sélection
     # d'une seule ligne choisie par le bouton "edit" dans le formulaire "genders_afficher.html"
     if request.method == 'GET':
@@ -122,21 +125,21 @@ def genders_edit():
             # l'utilisateur clique sur le lien "edit" et on récupére la valeur de "id_gender"
             # grâce à la variable "id_gender_edit_html"
             # <a href="{{ url_for('genders_edit', id_gender_edit_html=row.id_gender) }}">Edit</a>
-            id_gender_edit = request.values['id_gender_edit_html']
+            id_type_payment_edit = request.values['id_type_payment_edit_html']
 
             # Pour afficher dans la console la valeur de "id_gender_edit", une façon simple de se rassurer,
             # sans utiliser le DEBUGGER
-            print(id_gender_edit)
+            print(id_type_payment_edit)
 
             # Constitution d'un dictionnaire et insertion dans la BD
-            valeur_select_dictionnaire = {"value_id_gender": id_gender_edit}
+            valeur_select_dictionnaire = {"value_id_type_payment": id_type_payment_edit}
 
             # OM 2020.04.09 Objet contenant toutes les méthodes pour gérer (CRUD) les données.
-            obj_actions_genders = GestionGenders()
+            obj_actions_type_payment = GestionTypePayment()
 
             # OM 2019.04.02 La commande MySql est envoyée à la BD
-            data_id_gender = obj_actions_genders.edit_gender_data(valeur_select_dictionnaire)
-            print("dataIdGender ", data_id_gender, "type ", type(data_id_gender))
+            data_id_type_payment = obj_actions_type_payment.edit_type_payment_data(valeur_select_dictionnaire)
+            print("dataIdTypePayment ", data_id_type_payment, "type ", type(data_id_type_payment))
             # Message ci-après permettent de donner un sentiment rassurant aux utilisateurs.
             flash(f"Editer le gender d'un film !!!")
 
@@ -154,7 +157,7 @@ def genders_edit():
             raise MaBdErreurConnexion(f"RGG Exception {msg_erreurs['ErreurConnexionBD']['message']}"
                                       f"et son status {msg_erreurs['ErreurConnexionBD']['status']}")
 
-    return render_template('genders/genders_edit.html', data=data_id_gender)
+    return render_template('type_payment/type_payment_edit.html', data=data_id_type_payment)
 
 
 # ---------------------------------------------------------------------------------------------------
@@ -162,8 +165,8 @@ def genders_edit():
 # au navigateur par la méthode "render_template".
 # On change la valeur d'un gender de user par la commande MySql "UPDATE"
 # ---------------------------------------------------------------------------------------------------
-@obj_mon_application.route('/genders_update', methods=['POST', 'GET'])
-def genders_update():
+@obj_mon_application.route('/type_payment_update', methods=['POST', 'GET'])
+def type_payment_update():
     # DEBUG bon marché : Pour afficher les méthodes et autres de la classe "flask.request"
     print(dir(request))
     # OM 2020.04.07 Les données sont affichées dans un formulaire, l'affichage de la sélection
@@ -173,21 +176,21 @@ def genders_update():
     if request.method == 'POST':
         try:
             # DEBUG bon marché : Pour afficher les valeurs contenues dans le formulaire
-            print("request.values ",request.values)
+            print("request.values ", request.values)
 
             # Récupérer la valeur de "id_gender" du formulaire html "genders_edit.html"
             # l'utilisateur clique sur le lien "edit" et on récupére la valeur de "id_gender"
             # grâce à la variable "id_gender_edit_html"
             # <a href="{{ url_for('genders_edit', id_gender_edit_html=row.id_gender) }}">Edit</a>
-            id_gender_edit = request.values['id_gender_edit_html']
+            id_type_payment_edit = request.values['id_type_payment_edit_html']
 
             # Récupère le contenu du champ "gender" dans le formulaire HTML "GendersEdit.html"
-            gender = request.values['name_edit_gender_html']
-            valeur_edit_list = [{'id_gender': id_gender_edit, 'gender': gender}]
+            type_payment = request.values['name_edit_type_payment_html']
+            valeur_edit_list = [{'id_type_payment': id_type_payment_edit, 'type_payment': type_payment}]
             # On ne doit pas accepter des valeurs vides, des valeurs avec des chiffres,
             # des valeurs avec des caractères qui ne sont pas des lettres.
             # Accepte le trait d'union ou l'apostrophe, et l'espace entre deux mots, mais pas plus d'une occurence.
-            if not re.match("^([A-Z]|[a-z\u00C0-\u00FF])[A-Za-z\u00C0-\u00FF]*['\\- ]?[A-Za-z\u00C0-\u00FF]+$", gender):
+            if not re.match("^([A-Z]|[a-z\u00C0-\u00FF])[A-Za-z\u00C0-\u00FF]*['\\- ]?[A-Za-z\u00C0-\u00FF]+$", type_payment):
                 # En cas d'erreur, conserve la saisie fausse, afin que l'utilisateur constate sa misérable faute
                 # Récupère le contenu du champ "gender" dans le formulaire HTML "GendersEdit.html"
                 #gender = request.values['name_edit_gender_html']
@@ -199,27 +202,27 @@ def genders_update():
                 # Constitution d'une liste pour que le formulaire d'édition "genders_edit.html" affiche à nouveau
                 # la possibilité de modifier l'entrée
                 # Exemple d'une liste : [{'id_gender': 13, 'gender': 'philosophique'}]
-                valeur_edit_list = [{'id_gender': id_gender_edit, 'gender': gender}]
+                valeur_edit_list = [{'id_type_payment': id_type_payment_edit, 'type_payment': type_payment}]
 
                 # DEBUG bon marché :
                 # Pour afficher le contenu et le type de valeurs passées au formulaire "genders_edit.html"
                 print(valeur_edit_list, "type ..",  type(valeur_edit_list))
-                return render_template('genders/genders_edit.html', data=valeur_edit_list)
+                return render_template('type_payment/type_payment_edit.html', data=valeur_edit_list)
             else:
                 # Constitution d'un dictionnaire et insertion dans la BD
-                valeur_update_dictionnaire = {"value_id_gender": id_gender_edit, "value_gender": gender}
+                valeur_update_dictionnaire = {"value_id_type_payment": id_type_payment_edit, "value_type_payment": type_payment}
 
                 # OM 2020.04.09 Objet contenant toutes les méthodes pour gérer (CRUD) les données.
-                obj_actions_genders = GestionGenders()
+                obj_actions_type_payment = GestionTypePayment()
 
                 # La commande MySql est envoyée à la BD
-                data_id_gender = obj_actions_genders.update_gender_data(valeur_update_dictionnaire)
+                data_id_type_payment = obj_actions_type_payment.update_gender_data(valeur_update_dictionnaire)
                 # DEBUG bon marché :
-                print("dataIdGender ", data_id_gender, "type ", type(data_id_gender))
+                print("dataIdTypePayment ", data_id_type_payment, "type ", type(data_id_type_payment))
                 # Message ci-après permettent de donner un sentiment rassurant aux utilisateurs.
                 flash(f"Editer le gender d'un film !!!")
                 # On affiche les genders
-                return redirect(url_for('genders_afficher', order_by='ASC', id_genders_sel=0))
+                return redirect(url_for('type_payment_afficher', order_by='ASC', id_type_payment_sel=0))
 
         except (Exception,
                 pymysql.err.OperationalError,
@@ -229,12 +232,12 @@ def genders_update():
                 TypeError) as erreur:
 
             print(erreur.args)
-            flash(f"problème genders update{erreur.args[0]}")
+            flash(f"problème type_payment update{erreur.args[0]}")
             # En cas de problème, mais surtout en cas de non respect
             # des régles "REGEX" dans le champ "name_edit_gender_html" alors on renvoie le formulaire "EDIT"
-            return render_template('genders/genders_edit.html', data=valeur_edit_list)
+            return render_template('type_payment/type_payment_edit.html', data=valeur_edit_list)
 
-    return render_template("genders/genders_update.html")
+    return render_template("type_payment/type_payment_update.html")
 
 
 # ---------------------------------------------------------------------------------------------------
@@ -242,23 +245,23 @@ def genders_update():
 # au navigateur par la méthode "render_template".
 # On change la valeur d'un gender de user par la commande MySql "UPDATE"
 # ---------------------------------------------------------------------------------------------------
-@obj_mon_application.route('/genders_select_delete', methods=['POST', 'GET'])
-def genders_select_delete():
+@obj_mon_application.route('/type_payment_select_delete', methods=['POST', 'GET'])
+def type_payment_select_delete():
 
     if request.method == 'GET':
         try:
 
             # OM 2020.04.09 Objet contenant toutes les méthodes pour gérer (CRUD) les données.
-            obj_actions_genders = GestionGenders()
+            obj_actions_type_payment = GestionTypePayment()
             # OM 2019.04.04 Récupérer la valeur de "idGenderDeleteHTML" du formulaire html "GendersDelete.html"
-            id_gender_delete = request.args.get('id_gender_delete_html')
+            id_type_payment_delete = request.args.get('id_type_payment_delete_html')
 
             # Constitution d'un dictionnaire et insertion dans la BD
-            valeur_delete_dictionnaire = {"value_id_gender": id_gender_delete}
+            valeur_delete_dictionnaire = {"value_id_type_payment": id_type_payment_delete}
 
 
             # OM 2019.04.02 La commande MySql est envoyée à la BD
-            data_id_gender = obj_actions_genders.delete_select_gender_data(valeur_delete_dictionnaire)
+            data_id_type_payment = obj_actions_type_payment.delete_select_type_payment_data(valeur_delete_dictionnaire)
             flash(f"EFFACER et c'est terminé pour cette \"POV\" valeur !!!")
 
         except (Exception,
@@ -274,7 +277,7 @@ def genders_select_delete():
             flash(f"Erreur genders_delete {erreur.args[0], erreur.args[1]}")
 
     # Envoie la page "HTML" au serveur.
-    return render_template('genders/genders_delete.html', data = data_id_gender)
+    return render_template('type_payment/type_payment_delete.html', data=data_id_type_payment)
 
 
 # ---------------------------------------------------------------------------------------------------
@@ -282,25 +285,25 @@ def genders_select_delete():
 # au navigateur par la méthode "render_template".
 # Permettre à l'utilisateur de modifier un gender, et de filtrer son entrée grâce à des expressions régulières REGEXP
 # ---------------------------------------------------------------------------------------------------
-@obj_mon_application.route('/genders_delete', methods=['POST', 'GET'])
-def genders_delete():
+@obj_mon_application.route('/type_payment_delete', methods=['POST', 'GET'])
+def type_payment_delete():
 
     # OM 2019.04.02 Pour savoir si les données d'un formulaire sont un affichage ou un envoi de donnée par des champs utilisateurs.
     if request.method == 'POST':
         try:
             # OM 2020.04.09 Objet contenant toutes les méthodes pour gérer (CRUD) les données.
-            obj_actions_genders = GestionGenders()
+            obj_actions_type_payment = GestionTypePayment()
             # OM 2019.04.02 Récupérer la valeur de "id_gender" du formulaire html "GendersAfficher.html"
-            id_gender_delete = request.form['id_gender_delete_html']
+            id_type_payment_delete = request.form['id_type_payment_delete_html']
             # Constitution d'un dictionnaire et insertion dans la BD
-            valeur_delete_dictionnaire = {"value_id_gender": id_gender_delete}
+            valeur_delete_dictionnaire = {"value_id_type_payment": id_type_payment_delete}
 
-            data_genders = obj_actions_genders.delete_gender_data(valeur_delete_dictionnaire)
+            data_type_payment = obj_actions_type_payment.delete_type_payment_data(valeur_delete_dictionnaire)
             # OM 2019.04.02 On va afficher la liste des genders des user
             # OM 2019.04.02 Envoie la page "HTML" au serveur. On passe un message d'information dans "message_html"
 
             # On affiche les genders
-            return redirect(url_for('genders_afficher', order_by='ASC', id_genders_sel=0))
+            return redirect(url_for('type_payment_afficher', order_by='ASC', id_type_payment_sel=0))
 
 
 
@@ -314,7 +317,7 @@ def genders_delete():
                 # DEBUG bon marché : Pour afficher un message dans la console.
                 print(f"IMPOSSIBLE d'effacer !! Ce gender est associé à des user dans la t_genders_films !!! : {erreur}")
                 # Afficher la liste des genders des user
-                return redirect(url_for('genders_afficher', order_by='ASC', id_genders_sel=0))
+                return redirect(url_for('type_payment_afficher', order_by='ASC', id_type_payment_sel=0))
             else:
                 # Communiquer qu'une autre erreur que la 1062 est survenue.
                 # DEBUG bon marché : Pour afficher un message dans la console.
@@ -324,4 +327,4 @@ def genders_delete():
 
 
             # OM 2019.04.02 Envoie la page "HTML" au serveur.
-    return render_template('genders/genders_afficher.html', data=data_genders)
+    return render_template('type_payment/type_payment_afficher.html', data=data_type_payment)

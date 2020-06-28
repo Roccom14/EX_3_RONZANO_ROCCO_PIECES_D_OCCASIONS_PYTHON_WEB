@@ -6,7 +6,7 @@ from APP_PIECES_D_OCCASIONS.DATABASE.connect_db_context_manager import MaBaseDeD
 from APP_PIECES_D_OCCASIONS.DATABASE.erreurs import *
 
 
-class GestionGenders:
+class GestionStateStuff:
     def __init__(self):
         try:
             # DEBUG bon marché : Pour afficher un message dans la console.
@@ -22,32 +22,32 @@ class GestionGenders:
             raise MaBdErreurConnexion(f"{msg_erreurs['ErreurConnexionBD']['message']} {erreur.args[0]}")
         print("Classe constructeur GestionGenders ")
 
-    def gender_afficher_data(self, valeur_order_by, id_genders_sel):
+    def state_stuff_afficher_data(self, valeur_order_by, id_state_stuff_sel):
         try:
             with MaBaseDeDonnee().connexion_bd.cursor() as mc_afficher:
-                if valeur_order_by == "ASC" and id_genders_sel == 0:
-                    strsql_genders_afficher = """SELECT id_gender, gender FROM t_gender ORDER BY id_gender ASC"""
-                    mc_afficher.execute(strsql_genders_afficher)
+                if valeur_order_by == "ASC" and id_state_stuff_sel == 0:
+                    strsql_state_stuff_afficher = """SELECT id_state_stuff, state_stuff FROM t_state_stuff ORDER BY id_state_stuff ASC"""
+                    mc_afficher.execute(strsql_state_stuff_afficher)
                 elif valeur_order_by == "ASC":
                     # OM 2020.04.07 C'EST LA QUE VOUS ALLEZ DEVOIR PLACER VOTRE PROPRE LOGIQUE MySql
                     # la commande MySql classique est "SELECT * FROM t_genders"
                     # Pour "lever"(raise) une erreur s'il y a des erreurs sur les noms d'attributs dans la table
                     # donc, je précise les champs à afficher
                     # Constitution d'un dictionnaire pour associer l'id du gender sélectionné avec un nom de variable
-                    valeur_id_genders_selected_dictionnaire = {"value_id_genders_selected": id_genders_sel}
-                    strsql_genders_afficher = """SELECT id_gender, gender FROM t_gender  WHERE id_gender = %(value_id_gender_selected)s"""
+                    valeur_id_genders_selected_dictionnaire = {"value_id_state_stuff_selected": id_state_stuff_sel}
+                    strsql_state_stuff_afficher = """SELECT id_state_stuff, state_stuff FROM t_state_stuff  WHERE id_state_stuff = %(value_id_state_stuff_selected)s"""
                     # Envoi de la commande MySql
-                    mc_afficher.execute(strsql_genders_afficher, valeur_id_genders_selected_dictionnaire)
+                    mc_afficher.execute(strsql_state_stuff_afficher, valeur_id_state_stuff_selected_dictionnaire)
                 else:
-                    strsql_genders_afficher = """SELECT id_gender, gender FROM t_gender ORDER BY id_gender DESC"""
+                    strsql_state_stuff_afficher = """SELECT id_state_stuff, state_stuff FROM t_state_stuff ORDER BY id_state_stuff DESC"""
                     # Envoi de la commande MySql
-                    mc_afficher.execute(strsql_genders_afficher)
+                    mc_afficher.execute(strsql_state_stuff_afficher)
                     # Récupère les données de la requête.
-                data_genders = mc_afficher.fetchall()
+                data_state_stuff = mc_afficher.fetchall()
                 # Affichage dans la console
-                print("data_genders ", data_genders, " Type : ", type(data_genders))
+                print("data_state_stuff ", data_state_stuff, " Type : ", type(data_state_stuff))
                 # Retourne les données du "SELECT"
-                return data_genders
+                return data_state_stuff
         except pymysql.Error as erreur:
             print(f"DGG gad pymysql errror {erreur.args[0]} {erreur.args[1]}")
             raise MaBdErreurPyMySl(
@@ -60,17 +60,17 @@ class GestionGenders:
             # Ainsi on peut avoir un message d'erreur personnalisé.
             raise MaBdErreurConnexion(f"DGG gad pei {msg_erreurs['ErreurConnexionBD']['message']} {erreur.args[1]}")
 
-    def add_gender_data(self, valeurs_insertion_dictionnaire):
+    def add_state_stuff_data(self, valeurs_insertion_dictionnaire):
         try:
             print(valeurs_insertion_dictionnaire)
             # OM 2020.04.07 C'EST LA QUE VOUS ALLEZ DEVOIR PLACER VOTRE PROPRE LOGIQUE MySql
-            strsql_insert_gender = """INSERT INTO t_gender (id_gender,gender) VALUES (NULL,%(value_gender)s)"""
+            strsql_insert_state_stuff = """INSERT INTO t_state_stuff (id_state_stuff,state_stuff) VALUES (NULL,%(value_state_stuff)s)"""
             # Du fait de l'utilisation des "context managers" on accède au curseur grâce au "with".
             # la subtilité consiste à avoir une méthode "mabd_execute" dans la classe "MaBaseDeDonnee"
             # ainsi quand elle aura terminé l'insertion des données le destructeur de la classe "MaBaseDeDonnee"
             # sera interprété, ainsi on fera automatiquement un commit
             with MaBaseDeDonnee() as mconn_bd:
-                mconn_bd.mabd_execute(strsql_insert_gender, valeurs_insertion_dictionnaire)
+                mconn_bd.mabd_execute(strsql_insert_state_stuff, valeurs_insertion_dictionnaire)
 
         except pymysql.err.IntegrityError as erreur:
             # OM 2020.04.09 On dérive "pymysql.err.IntegrityError" dans "MaBdErreurDoublon" fichier "erreurs.py"
@@ -78,12 +78,12 @@ class GestionGenders:
             raise MaBdErreurDoublon(
                 f"DGG pei erreur doublon {msg_erreurs['ErreurDoublonValue']['message']} et son status {msg_erreurs['ErreurDoublonValue']['status']}")
 
-    def edit_gender_data(self, valeur_id_dictionnaire):
+    def edit_state_stuff_data(self, valeur_id_dictionnaire):
         try:
             print(valeur_id_dictionnaire)
             # OM 2020.04.07 C'EST LA QUE VOUS ALLEZ DEVOIR PLACER VOTRE PROPRE LOGIQUE MySql
             # Commande MySql pour afficher le gender sélectionné dans le tableau dans le formulaire HTML
-            str_sql_id_gender = """SELECT id_gender, gender FROM t_gender WHERE id_gender = %(value_id_gender)s"""
+            str_sql_id_state_stuff = """SELECT id_state_stuff, state_stuff FROM t_state_stuff WHERE id_state_stuff = %(value_id_state_stuff)s"""
 
             # Du fait de l'utilisation des "context managers" on accède au curseur grâce au "with".
             # la subtilité consiste à avoir une méthode "mabd_execute" dans la classe "MaBaseDeDonnee"
@@ -91,10 +91,10 @@ class GestionGenders:
             # sera interprété, ainsi on fera automatiquement un commit
             with MaBaseDeDonnee().connexion_bd as mconn_bd:
                 with mconn_bd as mc_cur:
-                    mc_cur.execute(str_sql_id_gender, valeur_id_dictionnaire)
-                    data_id_gender = mc_cur.fetchall()
-                    print("valeur_id_dictionnaire...", data_id_gender)
-                    return data_id_gender
+                    mc_cur.execute(str_sql_id_state_stuff, valeur_id_dictionnaire)
+                    data_id_state_stuff = mc_cur.fetchall()
+                    print("valeur_id_dictionnaire...", data_id_state_stuff)
+                    return data_id_state_stuff
 
         except Exception as erreur:
             # OM 2020.03.01 Message en cas d'échec du bon déroulement des commandes ci-dessus.
@@ -105,13 +105,13 @@ class GestionGenders:
             raise Exception(
                 "Raise exception... Problème edit_gender_data d'un gender Data Gestions Genders {erreur}")
 
-    def update_gender_data(self, valeur_update_dictionnaire):
+    def update_state_stuff_data(self, valeur_update_dictionnaire):
         try:
             print(valeur_update_dictionnaire)
             # OM 2019.04.02 Commande MySql pour la MODIFICATION de la valeur "CLAVIOTTEE" dans le champ "nameEditIntituleGenderHTML" du form HTML "GendersEdit.html"
             # le "%s" permet d'éviter des injections SQL "simples"
             # <td><input type = "text" name = "nameEditIntituleGenderHTML" value="{{ row.intitule_gender }}"/></td>
-            str_sql_update_gender = "UPDATE t_gender SET gender = %(value_gender)s WHERE id_gender = %(value_id_gender)s"
+            str_sql_update_gender = "UPDATE t_state_stuff SET state_stuff = %(value_state_stuff)s WHERE id_state_stuff = %(value_id_state_stuff)s"
 
             # Du fait de l'utilisation des "context managers" on accède au curseur grâce au "with".
             # la subtilité consiste à avoir une méthode "mabd_execute" dans la classe "MaBaseDeDonnee"
@@ -119,7 +119,7 @@ class GestionGenders:
             # sera interprété, ainsi on fera automatiquement un commit
             with MaBaseDeDonnee().connexion_bd as mconn_bd:
                 with mconn_bd as mc_cur:
-                    mc_cur.execute(str_sql_update_gender, valeur_update_dictionnaire)
+                    mc_cur.execute(str_sql_update_state_stuff, valeur_update_dictionnaire)
 
         except (Exception,
                 pymysql.err.OperationalError,
@@ -140,7 +140,7 @@ class GestionGenders:
 
                 raise Exception("Raise exception... Problème update_gender_data d'un gender DataGestionsGenders {erreur}")
 
-    def delete_select_gender_data(self, valeur_delete_dictionnaire):
+    def delete_select_state_stuff_data(self, valeur_delete_dictionnaire):
         try:
             print(valeur_delete_dictionnaire)
             # OM 2019.04.02 Commande MySql pour la MODIFICATION de la valeur "CLAVIOTTEE" dans le champ "nameEditIntituleGenderHTML" du form HTML "GendersEdit.html"
@@ -149,7 +149,7 @@ class GestionGenders:
 
             # OM 2020.04.07 C'EST LA QUE VOUS ALLEZ DEVOIR PLACER VOTRE PROPRE LOGIQUE MySql
             # Commande MySql pour afficher le gender sélectionné dans le tableau dans le formulaire HTML
-            str_sql_select_id_gender = "SELECT id_gender, gender FROM t_gender WHERE id_gender = %(value_id_gender)s"
+            str_sql_select_id_state_stuff = "SELECT id_state_stuff, state_stuff FROM t_state_stuff WHERE id_state_stuff = %(value_id_state_stuff)s"
 
             # Du fait de l'utilisation des "context managers" on accède au curseur grâce au "with".
             # la subtilité consiste à avoir une gméthode "mabd_execute" dans la classe "MaBaseDeDonnee"
@@ -157,7 +157,7 @@ class GestionGenders:
             # sera interprété, ainsi on fera automatiquement un commit
             with MaBaseDeDonnee().connexion_bd as mconn_bd:
                 with mconn_bd as mc_cur:
-                    mc_cur.execute(str_sql_select_id_gender, valeur_delete_dictionnaire)
+                    mc_cur.execute(str_sql_select_id_state_stuff, valeur_delete_dictionnaire)
                     data_one = mc_cur.fetchall()
                     print("valeur_id_dictionnaire...", data_one)
                     return data_one
@@ -169,19 +169,19 @@ class GestionGenders:
                 pymysql.IntegrityError,
                 TypeError) as erreur:
             # DEBUG bon marché : Pour afficher un message dans la console.
-            print(f"Problème delete_select_gender_data Gestions Genders numéro de l'erreur : {erreur}")
+            print(f"Problème delete_select_state_stuff_data Gestions state_stuff numéro de l'erreur : {erreur}")
             # C'est une erreur à signaler à l'utilisateur de cette application WEB.
-            flash(f"Flash. Problème delete_select_gender_data numéro de l'erreur : {erreur}", "danger")
+            flash(f"Flash. Problème delete_select_state_stuff_data numéro de l'erreur : {erreur}", "danger")
             raise Exception(
-                "Raise exception... Problème delete_select_gender_data d\'un gender Data Gestions Genders {erreur}")
+                "Raise exception... Problème delete_select_state_stuff_data d\'un state_stuff Data Gestions state_stuff {erreur}")
 
-    def delete_gender_data(self, valeur_delete_dictionnaire):
+    def delete_state_stuff_data(self, valeur_delete_dictionnaire):
         try:
             print(valeur_delete_dictionnaire)
             # OM 2019.04.02 Commande MySql pour EFFACER la valeur sélectionnée par le "bouton" du form HTML "GendersEdit.html"
             # le "%s" permet d'éviter des injections SQL "simples"
             # <td><input type = "text" name = "nameEditIntituleGenderHTML" value="{{ row.intitule_gender }}"/></td>
-            str_sql_delete_gender = "DELETE FROM t_gender WHERE id_gender = %(value_id_gender)s"
+            str_sql_delete_state_stuff = "DELETE FROM t_state_stuff WHERE id_state_stuff = %(value_id_state_stuff)s"
 
             # Du fait de l'utilisation des "context managers" on accède au curseur grâce au "with".
             # la subtilité consiste à avoir une méthode "mabd_execute" dans la classe "MaBaseDeDonnee"
@@ -189,7 +189,7 @@ class GestionGenders:
             # sera interprété, ainsi on fera automatiquement un commit
             with MaBaseDeDonnee().connexion_bd as mconn_bd:
                 with mconn_bd as mc_cur:
-                    mc_cur.execute(str_sql_delete_gender, valeur_delete_dictionnaire)
+                    mc_cur.execute(str_sql_delete_state_stuff, valeur_delete_dictionnaire)
                     data_one = mc_cur.fetchall()
                     print("valeur_id_dictionnaire...", data_one)
                     return data_one
@@ -210,5 +210,5 @@ class GestionGenders:
                 # flash(f"Flash. IMPOSSIBLE d'effacer !!! Ce gender est associé à des user dans la t_genders_films !!! : {erreur}", "danger")
                 # DEBUG bon marché : Pour afficher un message dans la console.
                 print(
-                    f"IMPOSSIBLE d'effacer !!! Ce gender est associé à des films dans la t_genders_films !!! : {erreur}")
+                    f"IMPOSSIBLE d'effacer !!! Ce gender est associé à des films dans la t_state_stuff !!! : {erreur}")
             raise MaBdErreurDelete(f"DGG Exception {msg_erreurs['ErreurDeleteContrainte']['message']} {erreur}")
