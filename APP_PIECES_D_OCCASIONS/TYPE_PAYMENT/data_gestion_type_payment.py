@@ -64,7 +64,7 @@ class GestionTypePayment:
         try:
             print(valeurs_insertion_dictionnaire)
             # OM 2020.04.07 C'EST LA QUE VOUS ALLEZ DEVOIR PLACER VOTRE PROPRE LOGIQUE MySql
-            strsql_insert_type_payment = """INSERT INTO t_type_payment (id_type_payment,type_payment) VALUES (NULL,%(value_type_payment)s)"""
+            strsql_insert_type_payment = """INSERT INTO t_type_payment (id_type_payment, type_payment) VALUES (NULL,%(value_type_payment)s)"""
             # Du fait de l'utilisation des "context managers" on accède au curseur grâce au "with".
             # la subtilité consiste à avoir une méthode "mabd_execute" dans la classe "MaBaseDeDonnee"
             # ainsi quand elle aura terminé l'insertion des données le destructeur de la classe "MaBaseDeDonnee"
@@ -92,8 +92,8 @@ class GestionTypePayment:
             with MaBaseDeDonnee().connexion_bd as mconn_bd:
                 with mconn_bd as mc_cur:
                     mc_cur.execute(str_sql_id_type_payment, valeur_id_dictionnaire)
-                    data_id_gender = mc_cur.fetchall()
-                    print("valeur_id_dictionnaire...", data_id_gender)
+                    data_id_type_payment = mc_cur.fetchall()
+                    print("valeur_id_dictionnaire...", data_id_type_payment)
                     return data_id_type_payment
 
         except Exception as erreur:

@@ -54,12 +54,15 @@ def genders_afficher(order_by,id_genders_sel):
 def genders_add():
     # OM 2019.03.25 Pour savoir si les données d'un formulaire sont un affichage
     # ou un envoi de donnée par des champs utilisateurs.
+
     if request.method == "POST":
         try:
             # OM 2020.04.09 Objet contenant toutes les méthodes pour gérer (CRUD) les données.
             obj_actions_genders = GestionGenders()
             # OM 2020.04.09 Récupère le contenu du champ dans le formulaire HTML "genders_add.html"
             gender = request.form['gender_html']
+
+
 
             # OM 2019.04.04 On ne doit pas accepter des valeurs vides, des valeurs avec des chiffres,
             # des valeurs avec des caractères qui ne sont pas des lettres.
@@ -138,7 +141,7 @@ def genders_edit():
             data_id_gender = obj_actions_genders.edit_gender_data(valeur_select_dictionnaire)
             print("dataIdGender ", data_id_gender, "type ", type(data_id_gender))
             # Message ci-après permettent de donner un sentiment rassurant aux utilisateurs.
-            flash(f"Editer le gender d'un film !!!")
+            flash(f"Vous editez le genre !!!")
 
         except (Exception,
                 pymysql.err.OperationalError,

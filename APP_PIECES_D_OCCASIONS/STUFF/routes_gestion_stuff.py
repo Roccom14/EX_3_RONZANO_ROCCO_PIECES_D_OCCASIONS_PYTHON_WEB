@@ -92,7 +92,7 @@ def stuff_add():
                 flash(f"Une entrée...incorrecte !! Pas de chiffres, de caractères spéciaux, d'espace à double, "
                       f"de double apostrophe, de double trait union et ne doit pas être vide.", "Danger")
                 # On doit afficher à nouveau le formulaire "user_add.html" à cause des erreurs de "claviotage"
-                return render_template("stuff/stuff_add.html")
+                return redirect(url_for("stuff_add"))
             else:
 
                 # Constitution d'un dictionnaire et insertion dans la BD
@@ -157,7 +157,7 @@ def stuff_edit():
     obj_actions_user = GestionUser()
     obj_actions_state_stuff = GestionStateStuff()
     obj_actions_type_payment = GestionTypePayment()
-    data_user = obj_actions_user.user_afficher_data(valeur_order_by='ASC', id_user_sel=0)
+    data_user = obj_actions_user.user_afficher_data()
     data_state_stuff = obj_actions_state_stuff.state_stuff_afficher_data(valeur_order_by='ASC', id_state_stuff_sel=0)
     data_type_payment = obj_actions_type_payment.type_payment_afficher_data(valeur_order_by='ASC', id_type_payment_sel=0)
 
@@ -183,7 +183,7 @@ def stuff_edit():
             data_id_stuff = obj_actions_stuff.edit_stuff_data(valeur_select_dictionnaire)
             print("dataIdStuff ", data_id_stuff, "type ", type(data_id_stuff))
             # Message ci-après permettent de donner un sentiment rassurant aux utilisateurs.
-            flash(f"Editer le firstname_user d'un film !!!")
+            flash(f"Editer le stuff !!!")
 
         except (Exception,
                 pymysql.err.OperationalError,
@@ -222,7 +222,7 @@ def stuff_update():
     obj_actions_user = GestionUser()
     obj_actions_state_stuff = GestionStateStuff()
     obj_actions_type_payment = GestionTypePayment()
-    data_user = obj_actions_user.user_afficher_data(valeur_order_by='ASC', id_user_sel=0)
+    data_user = obj_actions_user.user_afficher_data()
     data_state_stuff = obj_actions_state_stuff.state_stuff_afficher_data(valeur_order_by='ASC', id_state_stuff_sel=0)
     data_type_payment = obj_actions_type_payment.type_payment_afficher_data(valeur_order_by='ASC', id_type_payment_sel=0)
 
@@ -301,7 +301,7 @@ def stuff_update():
                 # DEBUG bon marché :
                 print("dataIdStuff ", data_id_stuff, "type ", type(data_id_stuff))
                 # Message ci-après permettent de donner un sentiment rassurant aux utilisateurs.
-                flash(f"Editer le firstname_user d'un film !!!")
+                flash(f"Editer le stuff !!!")
                 # On affiche les user
                 return redirect(url_for('stuff_afficher'))
 
@@ -329,7 +329,7 @@ def stuff_update():
 # au navigateur par la méthode "render_template".
 # On change la valeur d'un firstname_user de user par la commande MySql "UPDATE"
 # ---------------------------------------------------------------------------------------------------
-@obj_mon_application.route('/user_select_delete', methods=['POST', 'GET'])
+@obj_mon_application.route('/stuff_select_delete', methods=['POST', 'GET'])
 def stuff_select_delete():
     if request.method == 'GET':
         try:

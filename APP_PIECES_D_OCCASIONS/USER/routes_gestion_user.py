@@ -84,7 +84,7 @@ def user_add():
                 flash(f"Une entrée...incorrecte !! Pas de chiffres, de caractères spéciaux, d'espace à double, "
                       f"de double apostrophe, de double trait union et ne doit pas être vide.", "Danger")
                 # On doit afficher à nouveau le formulaire "user_add.html" à cause des erreurs de "claviotage"
-                return render_template("user/user_add.html")
+                return redirect(url_for("user_add"))
             else:
 
                 # Constitution d'un dictionnaire et insertion dans la BD
@@ -165,7 +165,7 @@ def user_edit():
             data_id_user = obj_actions_user.edit_user_data(valeur_select_dictionnaire)
             print("dataIdUser ", data_id_user, "type ", type(data_id_user))
             # Message ci-après permettent de donner un sentiment rassurant aux utilisateurs.
-            flash(f"Editer le firstname_user d'un film !!!")
+            flash(f"Vous editez le user !!!")
 
         except (Exception,
                 pymysql.err.OperationalError,
@@ -272,7 +272,6 @@ def user_update():
                 # DEBUG bon marché :
                 print("dataIdUser ", data_id_user, "type ", type(data_id_user))
                 # Message ci-après permettent de donner un sentiment rassurant aux utilisateurs.
-                flash(f"Editer le firstname_user d'un film !!!")
                 # On affiche les user
                 return redirect(url_for('user_afficher'))
 

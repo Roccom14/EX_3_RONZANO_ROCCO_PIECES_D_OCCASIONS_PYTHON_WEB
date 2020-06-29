@@ -61,8 +61,8 @@ def state_stuff_add():
         try:
             # OM 2020.04.09 Objet contenant toutes les méthodes pour gérer (CRUD) les données.
             obj_actions_state_stuff = GestionStateStuff()
-            # OM 2020.04.09 Récupère le contenu du champ dans le formulaire HTML "genders_add.html"
-            state_stuff = request.form['gender_html']
+            # OM 2020.04.09 Récupère le contenu du champ dans le formulaire HTML "state_stuff_add.html"
+            state_stuff = request.form['state_stuff_html']
 
             # OM 2019.04.04 On ne doit pas accepter des valeurs vides, des valeurs avec des chiffres,
             # des valeurs avec des caractères qui ne sont pas des lettres.

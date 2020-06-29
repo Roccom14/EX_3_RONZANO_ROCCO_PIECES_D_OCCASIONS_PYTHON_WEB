@@ -19,7 +19,7 @@ import re
 
 
 @obj_mon_application.route("/type_payment_afficher/<string:order_by>/<int:id_type_payment_sel>", methods=['GET', 'POST'])
-def type_payment_afficher(order_by,id_type_payment_sel):
+def type_payment_afficher(order_by, id_type_payment_sel):
     # OM 2020.04.09 Pour savoir si les données d'un formulaire sont un affichage
     # ou un envoi de donnée par des champs du formulaire HTML.
     if request.method == "GET":
@@ -28,12 +28,12 @@ def type_payment_afficher(order_by,id_type_payment_sel):
             obj_actions_type_payment = GestionTypePayment()
             # Récupére les données grâce à une requête MySql définie dans la classe GestionTypePayment()
             # Fichier data_gestion_genders.py
-            data_type_payment = obj_actions_type_payment.type_payment_afficher_data(order_by,id_type_payment_sel)
+            data_type_payment = obj_actions_type_payment.type_payment_afficher_data(order_by, id_type_payment_sel)
             # DEBUG bon marché : Pour afficher un message dans la console.
             print(" data genders", data_type_payment, "type ", type(data_type_payment))
 
             # OM 2020.04.09 La ligns ci-après permet de donner un sentiment rassurant aux utilisateurs.
-            flash("Données genders affichées !!", "Success")
+            flash("Données type_payment affichées !!", "Success")
         except Exception as erreur:
             print(f"RGG Erreur générale.")
             # OM 2020.04.09 On dérive "Exception" par le "@obj_mon_application.errorhandler(404)" fichier "run_mon_app.py"
@@ -216,7 +216,7 @@ def type_payment_update():
                 obj_actions_type_payment = GestionTypePayment()
 
                 # La commande MySql est envoyée à la BD
-                data_id_type_payment = obj_actions_type_payment.update_gender_data(valeur_update_dictionnaire)
+                data_id_type_payment = obj_actions_type_payment.update_type_payment_data(valeur_update_dictionnaire)
                 # DEBUG bon marché :
                 print("dataIdTypePayment ", data_id_type_payment, "type ", type(data_id_type_payment))
                 # Message ci-après permettent de donner un sentiment rassurant aux utilisateurs.
@@ -272,9 +272,9 @@ def type_payment_select_delete():
                 TypeError) as erreur:
             # Communiquer qu'une erreur est survenue.
             # DEBUG bon marché : Pour afficher un message dans la console.
-            print(f"Erreur genders_delete {erreur.args[0], erreur.args[1]}")
+            print(f"Erreur type_payment_delete {erreur.args[0], erreur.args[1]}")
             # C'est une erreur à signaler à l'utilisateur de cette application WEB.
-            flash(f"Erreur genders_delete {erreur.args[0], erreur.args[1]}")
+            flash(f"Erreur type_payment_delete {erreur.args[0], erreur.args[1]}")
 
     # Envoie la page "HTML" au serveur.
     return render_template('type_payment/type_payment_delete.html', data=data_id_type_payment)
@@ -302,7 +302,7 @@ def type_payment_delete():
             # OM 2019.04.02 On va afficher la liste des genders des user
             # OM 2019.04.02 Envoie la page "HTML" au serveur. On passe un message d'information dans "message_html"
 
-            # On affiche les genders
+            # On affiche les type-payment
             return redirect(url_for('type_payment_afficher', order_by='ASC', id_type_payment_sel=0))
 
 
@@ -313,7 +313,7 @@ def type_payment_delete():
             # Cette erreur 1451, signifie qu'on veut effacer un "gender" de user qui est associé dans "t_genders_films".
             if erreur.args[0] == 1451:
                 # C'est une erreur à signaler à l'utilisateur de cette application WEB.
-                flash('IMPOSSIBLE d\'effacer !!! Cette valeur est associée à des user !')
+                flash('IMPOSSIBLE d\'effacer !!! Cette valeur est associée à des stuff !')
                 # DEBUG bon marché : Pour afficher un message dans la console.
                 print(f"IMPOSSIBLE d'effacer !! Ce gender est associé à des user dans la t_genders_films !!! : {erreur}")
                 # Afficher la liste des genders des user

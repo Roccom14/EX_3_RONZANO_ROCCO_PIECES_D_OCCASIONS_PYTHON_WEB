@@ -1,21 +1,21 @@
 {% extends "base.html" %}
-{% block title %}supprimer un GENRE{% endblock %}
+{% block title %}supprimer un type payment{% endblock %}
 {% block body %}
     <div class="home">
         <center>
             <div class="col-md-12">
-                <form method="POST" action="{{ url_for('genders_delete') }}">
+                <form method="POST" action="{{ url_for('type_payment_delete') }}">
                     <table cellpadding="7">
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Genre</th>
+                                <th>Type_payment</th>
                             </tr>
                         </thead>
                         {% for row in data %}
                             <tr>
-                                <td><input type="hidden" name="id_gender_delete_html" value="{{ row.id_gender }}"></td>
-                                <td>{{ row.gender }}</td>
+                                <td><input type="hidden" name="id_type_payment_delete_html" value="{{ row.id_type_payment }}"></td>
+                                <td>{{ row.type_payment }}</td>
                                 <td><button class="btn btn-danger" type="submit">EFFACER</button></td>
                             </tr>
                         {% endfor %}

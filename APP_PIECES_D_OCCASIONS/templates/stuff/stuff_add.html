@@ -3,7 +3,7 @@
 {% block body %}
     <div class="home">
         <form method="POST" action="">
-            <table border="1" cellpadding="5" cellspacing="5">
+            <table cellpadding="7" cellspacing="5">
                 <thead>
                     <tr>
                         <th class="align-middle">ID</th>
@@ -29,7 +29,7 @@
                         <td>
                             <div>
                                 <select name="user_select">
-                                    {% for row in data_genders %}
+                                    {% for row in data_user %}
                                         <option value="{{ row.id_user }}">{{ row.firstname_user }} {{ row.lastname_user }}</option>
                                     {% endfor %}
                                 </select>
@@ -38,7 +38,7 @@
                         <td>
                             <div>
                                 <select name="state_stuff_select">
-                                    {% for row in data_genders %}
+                                    {% for row in data_state_stuff %}
                                         <option value="{{ row.id_state_stuff }}">{{ row.state_stuff }}</option>
                                     {% endfor %}
                                 </select>
@@ -47,7 +47,7 @@
                         <td>
                             <div>
                                 <select name="type_payment_select">
-                                    {% for row in data_genders %}
+                                    {% for row in data_type_payment %}
                                         <option value="{{ row.id_payment }}">{{ row.type_payment }}</option>
                                     {% endfor %}
                                 </select>
@@ -59,6 +59,5 @@
                     </tr>
             </table>
         </form>
-        </BODY>
     </div>
 {% endblock %}

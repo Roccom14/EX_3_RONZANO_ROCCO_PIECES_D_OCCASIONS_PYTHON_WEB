@@ -2,8 +2,9 @@
 {% block title %}Supprimer un USER{% endblock %}
 {% block body %}
     <div class="home">
+        <div class="col-md-12">
             <form method="POST" action="{{ url_for('user_delete') }}">
-                <table border="1" cellpadding="5" cellspacing="5">
+                <table class="table table-bordered table-sm">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -35,6 +36,6 @@
                     {% endfor %}
                 </table>
             </form>
-        </BODY>
+        </div>
     </div>
 {% endblock %}

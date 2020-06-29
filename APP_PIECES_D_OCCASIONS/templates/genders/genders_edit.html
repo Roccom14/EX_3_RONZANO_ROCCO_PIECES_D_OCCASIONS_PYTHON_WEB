@@ -2,17 +2,13 @@
 {% block title %}Editer un GENRE{% endblock %}
 {% block body %}
     <div class="home">
-        <BODY>
+        <center>
             <form method="POST" action="{{ url_for('genders_update') }}">
-                <div>
-
-                </div>
-                <br>
-                <table border="1" cellpadding="5" cellspacing="5">
+                <table cellpadding="7">
                     <thead>
                         <tr>
-                            <th>ID Genre</th>
-                            <th>Nom genre</th>
+                            <th>ID</th>
+                            <th>Genre</th>
                         </tr>
                     </thead>
                     {% for row in data %}
@@ -24,6 +20,6 @@
                     {% endfor %}
                 </table>
             </form>
-        </BODY>
+        </center>
     </div>
 {% endblock %}

@@ -34,7 +34,7 @@ class GestionStateStuff:
                     # Pour "lever"(raise) une erreur s'il y a des erreurs sur les noms d'attributs dans la table
                     # donc, je précise les champs à afficher
                     # Constitution d'un dictionnaire pour associer l'id du gender sélectionné avec un nom de variable
-                    valeur_id_genders_selected_dictionnaire = {"value_id_state_stuff_selected": id_state_stuff_sel}
+                    valeur_id_state_stuff_selected_dictionnaire = {"value_id_state_stuff_selected": id_state_stuff_sel}
                     strsql_state_stuff_afficher = """SELECT id_state_stuff, state_stuff FROM t_state_stuff  WHERE id_state_stuff = %(value_id_state_stuff_selected)s"""
                     # Envoi de la commande MySql
                     mc_afficher.execute(strsql_state_stuff_afficher, valeur_id_state_stuff_selected_dictionnaire)
@@ -64,7 +64,7 @@ class GestionStateStuff:
         try:
             print(valeurs_insertion_dictionnaire)
             # OM 2020.04.07 C'EST LA QUE VOUS ALLEZ DEVOIR PLACER VOTRE PROPRE LOGIQUE MySql
-            strsql_insert_state_stuff = """INSERT INTO t_state_stuff (id_state_stuff,state_stuff) VALUES (NULL,%(value_state_stuff)s)"""
+            strsql_insert_state_stuff = """INSERT INTO t_state_stuff (id_state_stuff, state_stuff) VALUES (NULL,%(value_state_stuff)s)"""
             # Du fait de l'utilisation des "context managers" on accède au curseur grâce au "with".
             # la subtilité consiste à avoir une méthode "mabd_execute" dans la classe "MaBaseDeDonnee"
             # ainsi quand elle aura terminé l'insertion des données le destructeur de la classe "MaBaseDeDonnee"
@@ -111,7 +111,7 @@ class GestionStateStuff:
             # OM 2019.04.02 Commande MySql pour la MODIFICATION de la valeur "CLAVIOTTEE" dans le champ "nameEditIntituleGenderHTML" du form HTML "GendersEdit.html"
             # le "%s" permet d'éviter des injections SQL "simples"
             # <td><input type = "text" name = "nameEditIntituleGenderHTML" value="{{ row.intitule_gender }}"/></td>
-            str_sql_update_gender = "UPDATE t_state_stuff SET state_stuff = %(value_state_stuff)s WHERE id_state_stuff = %(value_id_state_stuff)s"
+            str_sql_update_state_stuff = "UPDATE t_state_stuff SET state_stuff = %(value_state_stuff)s WHERE id_state_stuff = %(value_id_state_stuff)s"
 
             # Du fait de l'utilisation des "context managers" on accède au curseur grâce au "with".
             # la subtilité consiste à avoir une méthode "mabd_execute" dans la classe "MaBaseDeDonnee"

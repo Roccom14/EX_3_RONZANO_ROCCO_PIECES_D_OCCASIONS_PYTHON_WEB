@@ -47,18 +47,20 @@
 	<div class="collapse navbar-collapse" id="navbarResponsive">
 		<ul class="navbar-nav ml-auto">
 		  <li class="nav-item">
-<!--		Afficher la liste des genders dans l'ordre (ASC) et tous les genders (0)-->
-              <a class="nav-link" href="{{ url_for('stuff_afficher') }}">Stuff</a>
               <a class="nav-link" href="{{ url_for('user_afficher') }}">User</a>
 		  </li>
-		  <li class="nav-item dropdown">
-			<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPortfolio" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Autres Tables</a>
-			<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownPortfolio">
-                <a class="dropdown-item" href="{{ url_for('genders_afficher', order_by='ASC', id_genders_sel=0) }}">Genres</a>
-                <a class="dropdown-item" href="{{ url_for('state_stuff_afficher', order_by='ASC', id_state_stuff_sel=0) }}">State Stuff</a>
-                <a class="dropdown-item" href="{{ url_for('type_payment_afficher', order_by='ASC', id_type_payment_sel=0) }}">Type Payment</a>
-			</div>
-		  </li>
+          <li>
+              <a class="nav-link" href="{{ url_for('stuff_afficher') }}">Stuff</a>
+          </li>
+          <li>
+              <a class="nav-link" href="{{ url_for('genders_afficher', order_by='ASC', id_genders_sel=0) }}">Genres</a>
+          </li>
+          <li>
+              <a class="nav-link" href="{{ url_for('state_stuff_afficher', order_by='ASC', id_state_stuff_sel=0) }}">State Stuff</a>
+          </li>
+          <li>
+              <a class="nav-link" href="{{ url_for('type_payment_afficher', order_by='ASC', id_type_payment_sel=0) }}">Type Payment</a>
+          </li>
 		  <li class="nav-item dropdown">
 			<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownBlog" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Autres démos</a>
 			<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownBlog">
